@@ -24,12 +24,18 @@ public partial class WaitingScreen : Window
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    public WaitingScreen( string message = "処理中です…" )
+    public WaitingScreen( string message = "処理中です…", Window? owner = null )
     {
         InitializeComponent();
 
         DataContext = MainViewModel.Instance;
 
+        // オーナーが指定されていない場合は現在のアクティブウィンドウを充てる
+        Owner = owner ?? Application.Current.Windows
+                         .OfType<Window>()
+                         .SingleOrDefault( x => x.IsActive );
+
+        // 表示メッセージ、画像ファイル更新
         MainViewModel.Instance.Message.Value = message;
         ReNewImgPath();
 
